@@ -3,7 +3,7 @@
 DOCKER_BUILD_OPTIONS=--no-cache=false --squash
 GOSU1_VERSION=1.11
 SPAWN_AND_TAIL_VERSION=0.2
-TAG_VERSION=1.0
+TAG_VERSION=1.1
 TOMCAT9_VERSION=9.0.19
 
 sync-tools: deps/gosu1 deps/spawn-and-tail1
