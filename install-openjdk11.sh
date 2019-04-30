@@ -1,6 +1,11 @@
 #!/bin/bash -e
 echo "installing openjdk 11 (Oracle build)"
 
+apt-get update
+apt-get install -y libfreetype6
+rm -rf /var/lib/apt/lists/*
+
+
 if [ ! -f /usr/sbin/update-alternatives ]; then
     ln -s /usr/sbin/update-alternatives  /usr/sbin/alternatives
 fi
