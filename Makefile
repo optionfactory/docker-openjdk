@@ -30,6 +30,11 @@ deps/apache-tomcat-${TOMCAT9_VERSION}:
 	curl -# -sSL -k http://it.apache.contactlab.it/tomcat/tomcat-9/v${TOMCAT9_VERSION}/bin/apache-tomcat-${TOMCAT9_VERSION}.tar.gz | tar xz -C deps
 deps/tomcat9: deps/apache-tomcat-${TOMCAT9_VERSION}
 
+deps/yourkit:
+	wget https://www.yourkit.com/download/docker/YourKit-JavaProfiler-2019.1-docker.zip -P /tmp
+	unzip /tmp/YourKit-JavaProfiler-2019.1-docker.zip -d deps/yourkit
+	rm /tmp/YourKit-JavaProfiler-2019.1-docker.zip
+
 sync-openjdk11: deps/jdk-11
 	@echo "syncing openjdk 11"
 	@mkdir -p optionfactory-ubuntu18-openjdk11/deps
@@ -42,9 +47,17 @@ sync-tomcat9: deps/tomcat9
 	@echo optionfactory-ubuntu18-openjdk11-tomcat9/deps | xargs -n 1 rsync -az init-tomcat9.sh
 	@echo optionfactory-ubuntu18-openjdk11-tomcat9/deps | xargs -n 1 rsync -az deps/apache-tomcat-${TOMCAT9_VERSION}
 
+sync-yourkit: deps/yourkit
+	@echo "syncing yourkit"
+	@echo optionfactory-ubuntu18-openjdk11-tomcat9-yourkit/deps | xargs -n 1 rsync -az install-yourkit.sh
+	@echo optionfactory-ubuntu18-openjdk11-tomcat9-yourkit/deps | xargs -n 1 rsync -az deps/yourkit
+
 docker-optionfactory-ubuntu18-openjdk11: sync-tools sync-openjdk11
 	docker build ${DOCKER_BUILD_OPTIONS} --tag=optionfactory/ubuntu18-openjdk11:${TAG_VERSION} optionfactory-ubuntu18-openjdk11
 	docker tag optionfactory/ubuntu18-openjdk11:${TAG_VERSION} optionfactory/ubuntu18-openjdk11:latest
 docker-optionfactory-ubuntu18-openjdk11-tomcat9: sync-tools sync-tomcat9
 	docker build ${DOCKER_BUILD_OPTIONS} --tag=optionfactory/ubuntu18-openjdk11-tomcat9:${TAG_VERSION} optionfactory-ubuntu18-openjdk11-tomcat9
 	docker tag optionfactory/ubuntu18-openjdk11-tomcat9:${TAG_VERSION} optionfactory/ubuntu18-openjdk11-tomcat9:latest
+docker-optionfactory-ubuntu18-openjdk11-tomcat9-yourkit: sync-tools sync-yourkit
+	docker build ${DOCKER_BUILD_OPTIONS} --tag=optionfactory/ubuntu18-openjdk11-tomcat9-yourkit:${TAG_VERSION} optionfactory-ubuntu18-openjdk11-tomcat9-yourkit
+	docker tag optionfactory/ubuntu18-openjdk11-tomcat9-yourkit:${TAG_VERSION} optionfactory/ubuntu18-openjdk11-tomcat9-yourkit:latest
