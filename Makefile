@@ -4,7 +4,7 @@ DOCKER_BUILD_OPTIONS=--no-cache=false --squash
 GOSU1_VERSION=1.11
 SPAWN_AND_TAIL_VERSION=0.2
 TAG_VERSION=1.1
-TOMCAT9_VERSION=9.0.19
+TOMCAT9_VERSION=9.0.20
 
 sync-tools: deps/gosu1 deps/spawn-and-tail1
 	@echo "syncing gosu"
@@ -24,7 +24,8 @@ deps/spawn-and-tail-${SPAWN_AND_TAIL_VERSION}:
 	curl -# -j -k -L https://github.com/optionfactory/spawn-and-tail/releases/download/v${SPAWN_AND_TAIL_VERSION}/spawn-and-tail-linux-amd64 > deps/spawn-and-tail-${SPAWN_AND_TAIL_VERSION}
 	chmod +x deps/spawn-and-tail-${SPAWN_AND_TAIL_VERSION}
 deps/jdk-11:
-		curl -# -j -k -L https://download.oracle.com/openjdk/jdk11/ri/openjdk-11+28_linux-x64_bin.tar.gz | tar xz -C deps
+	curl -# -j -k -L https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.3%2B7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.3_7.tar.gz | tar xz -C deps
+	mv deps/jdk-11* deps/jdk-11
 deps/apache-tomcat-${TOMCAT9_VERSION}:
 	curl -# -sSL -k http://it.apache.contactlab.it/tomcat/tomcat-9/v${TOMCAT9_VERSION}/bin/apache-tomcat-${TOMCAT9_VERSION}.tar.gz | tar xz -C deps
 deps/tomcat9: deps/apache-tomcat-${TOMCAT9_VERSION}
