@@ -2,7 +2,7 @@
 echo "installing openjdk 11 (Oracle build)"
 
 apt-get update
-apt-get install -y libfreetype6
+apt-get install -y libfreetype6 fontconfig
 rm -rf /var/lib/apt/lists/*
 
 
